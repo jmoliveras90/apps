@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trello.Selenium", "Trello.Selenium\Trello.Selenium.csproj", "{A3F9028D-CF51-4E4F-9EB5-6DD1192B6640}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trello.Client", "Trello.Client\Trello.Client.csproj", "{137DCFE0-C0B5-4815-9577-6DEF281E673F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trello.Application", "Trello.Application\Trello.Application.csproj", "{C78C12B2-CB09-4B10-B0D1-2C22B5A7F499}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A3F9028D-CF51-4E4F-9EB5-6DD1192B6640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3F9028D-CF51-4E4F-9EB5-6DD1192B6640}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3F9028D-CF51-4E4F-9EB5-6DD1192B6640}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3F9028D-CF51-4E4F-9EB5-6DD1192B6640}.Release|Any CPU.Build.0 = Release|Any CPU
+		{137DCFE0-C0B5-4815-9577-6DEF281E673F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{137DCFE0-C0B5-4815-9577-6DEF281E673F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{137DCFE0-C0B5-4815-9577-6DEF281E673F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{137DCFE0-C0B5-4815-9577-6DEF281E673F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C78C12B2-CB09-4B10-B0D1-2C22B5A7F499}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C78C12B2-CB09-4B10-B0D1-2C22B5A7F499}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C78C12B2-CB09-4B10-B0D1-2C22B5A7F499}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C78C12B2-CB09-4B10-B0D1-2C22B5A7F499}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3CD43298-CA94-4084-AAE7-A37BC6BEF3F2}
+	EndGlobalSection
+EndGlobal
