@@ -1,8 +1,4 @@
-﻿using OpenQA.Selenium;
-using Trello.Selenium.UI.Interfaces;
-using Trello.Selenium.UI;
-
-namespace Trello.Selenium.Dto
+﻿namespace Trello.Selenium.Dto
 {
     public class ColumnDto
     {

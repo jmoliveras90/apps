@@ -16,7 +16,10 @@ namespace Trello.Selenium.Utils
 
         public static ChromeOptions GetOptions()
         {
-            var result = new ChromeOptions();
+            var result = new ChromeOptions
+            {
+                PageLoadStrategy = PageLoadStrategy.None
+            };
 
             result.AddArgument("--incognito");
             result.AddArgument("--disable-search-engine-choice-screen");

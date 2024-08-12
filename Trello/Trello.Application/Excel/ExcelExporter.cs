@@ -6,45 +6,49 @@ namespace Trello.Application.Excel
 {
     public static class ExcelExporter
     {
-        public static void ExportToExcel(BoardDto board)
+        public static void ExportToExcel(BoardDto board, IEnumerable<string> names)
         {
-            using (var workbook = new XLWorkbook())
+            using var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Portugal");
+            var rowCount = 0;
+
+            foreach (var column in board.Columns)
             {
-                var worksheet = workbook.Worksheets.Add("Portugal");
-                var rowCount = 0;
+                var currentRow = rowCount + 1;
 
-                foreach (var column in board.Columns)
+                worksheet.Cell(currentRow, 2).Value = column.Title;
+                var headerRange = worksheet.Range(currentRow, 2, currentRow, 4);
+
+                headerRange.Merge();
+
+                headerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                headerRange.Style.Fill.BackgroundColor = XLColor.LightPink;
+                headerRange.Style.Font.SetBold();
+
+                foreach (var card in column.Cards)
                 {
-                    var currentRow = rowCount + 1;
+                    currentRow++;
 
-                    worksheet.Cell(currentRow, 2).Value = column.Title;
-                    var headerRange = worksheet.Range(currentRow, 2, currentRow, 4);
+                    var nameCell = worksheet.Cell(currentRow, 2);
+                    var statusCell = worksheet.Cell(currentRow, 4);
 
-                    headerRange.Merge();
+                    nameCell.Style.Font.SetBold();
+                    statusCell.Style.Font.SetBold();
 
-                    headerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                    headerRange.Style.Fill.BackgroundColor = XLColor.LightPink;
-                    headerRange.Style.Font.SetBold();
-
-                    foreach (var card in column.Cards)
-                    {
-                        currentRow++;
-
-                        worksheet.Cell(currentRow, 2).Value = "Nombre";
-                        worksheet.Cell(currentRow, 3).Value = card.Description;
-                        worksheet.Cell(currentRow, 4).Value = card.Comments.FirstOrDefault() ?? string.Empty;
-                    }
-
-                    rowCount += column.Cards.Count + 3;
+                    nameCell.Value = names.FirstOrDefault(x => card.Description.Contains(x, StringComparison.CurrentCultureIgnoreCase)) ?? string.Empty;
+                    worksheet.Cell(currentRow, 3).Value = card.Description;
+                    statusCell.Value = card.Comments.FirstOrDefault() ?? string.Empty;
                 }
 
-                worksheet.Columns().AdjustToContents();
-
-                string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"Portugal_{DateTime.Now.Ticks}.xlsx");
-                workbook.SaveAs(filePath);
-
-                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+                rowCount += column.Cards.Count + 3;
             }
+
+            worksheet.Columns().AdjustToContents();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"Portugal_{DateTime.Now.Ticks}.xlsx");
+            workbook.SaveAs(filePath);
+
+            Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
         }
     }
 }

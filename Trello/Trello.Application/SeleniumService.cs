@@ -6,29 +6,30 @@ namespace Trello.Application
 {
     public class SeleniumService
     {
-        public static void StartSelenium(string url, string user, string password)
+        public static void StartSelenium(string url, string user, string password, IEnumerable<string> names, int timeout, bool parallel)
         {
-            var seleniumManager = new SeleniunManager(url, user, password);
+            var seleniumManager = new SeleniunManager(url, user, password, timeout);
 
             try
             {
                 var board = seleniumManager.Start();
-
                 var boardDto = new BoardDto
                 {
-                    Columns = board.Columns.Select(c => new ColumnDto
+                    Columns = board.Columns.Select((column, i) => new ColumnDto
                     {
-                        Title = c.Title,
-                        Cards = c.Cards.Select(ca => new CardDto
+                        Title = column.Title,
+                        Cards = column.Cards.Select((card, j) => new CardDto
                         {
-                            Description = ca.Description,
-                            Href = ca.Href,
+                            Index = j,
+                            ColumnIndex = i,
+                            Description = card.Description,
+                            Href = card.Href,
                         }).ToList()
                     }).ToList()
                 };
 
-                SeleniunManager.GetComments(boardDto);
-                ExportData(boardDto);
+                seleniumManager.GetComments(boardDto, parallel);
+                ExportData(boardDto, names);
             }
             catch
             {
@@ -40,9 +41,9 @@ namespace Trello.Application
             }        
         }        
 
-        public static void ExportData(BoardDto board)
+        public static void ExportData(BoardDto board, IEnumerable<string> names)
         {
-            ExcelExporter.ExportToExcel(board);
+            ExcelExporter.ExportToExcel(board, names);
         }
     }
 }

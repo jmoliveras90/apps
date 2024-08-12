@@ -1,17 +1,16 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-using System.Xml.Linq;
 using Trello.Selenium.Dto;
 using Trello.Selenium.UI;
 using Trello.Selenium.Utils;
 
 namespace Trello.Selenium
 {
-    public class SeleniunManager(string url, string login, string password)
+    public class SeleniunManager(string url, string login, string password, int timeout)
     {
         public static IWebDriver Driver => WebDriverUtils.GetWebDriver();
-        public static WebDriverWait Wait => WebDriverUtils.GetWebDriverWait();
+        public WebDriverWait Wait => WebDriverUtils.GetWebDriverWait(timeout);
 
         public IBoard Start()
         {
@@ -54,7 +53,7 @@ namespace Trello.Selenium
         public void FilterByTag()
         {
             Driver.Navigate()
-               .GoToUrl($"{url}?filter=label:PORTUGAL");           
+               .GoToUrl($"{url}?filter=label:PORTUGAL");
         }
 
         public static IBoard GetBoard()
@@ -62,7 +61,20 @@ namespace Trello.Selenium
             return new Board(By.Id("board"));
         }
 
-        public static void GetComments(BoardDto board)
+        public void GetComments(BoardDto board, bool parallel)
+        {
+            if (parallel)
+            {              
+                LoadParallel(board);
+            }
+            else
+            {
+                LoadSequential(board);
+            }           
+        }
+
+
+        private void LoadSequential(BoardDto board)
         {
             foreach (var column in board.Columns)
             {
@@ -86,14 +98,65 @@ namespace Trello.Selenium
                         comments = [];
                     }
 
-                    card.Comments = comments;                   
+                    card.Comments = comments;
+                }
+            }
+        }
+
+        private void LoadParallel(BoardDto board)
+        {
+            var cards = board.Columns.SelectMany(c => c.Cards).ToList();
+
+            if (cards.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var card in cards)
+            {
+                ((IJavaScriptExecutor)Driver).ExecuteScript("window.open('" + card.Href + "', '_blank');");
+                Thread.Sleep(100);
+            }
+
+            for (int i = 1; i < Driver.WindowHandles.Count; i++)
+            {
+                string? handle = Driver.WindowHandles[i];
+                Driver.SwitchTo().Window(handle);
+
+                Wait.Until(ExpectedConditions.ElementIsVisible(By
+                                               .ClassName("card-detail-window")));
+
+                var title = Wait.Until(ExpectedConditions.ElementIsVisible(By
+                                                                  .XPath("//*[@id=\"js-dialog-title\"]"))).Text;
+
+                var comments = new List<string>();
+
+                try
+                {
+                    comments = Wait.Until(x => Driver.FindElements(By
+                                               .ClassName("current-comment"))
+                    .Select(c => c.FindElement(By.TagName("p")).Text)).ToList();
+                }
+                catch
+                {
+                    comments = [];
+                }
+
+                cards.Single(c => c.Description == title).Comments = comments;
+            }
+
+            foreach (var column in board.Columns)
+            {
+                foreach (var card in column.Cards)
+                {
+                    card.Comments = cards.Single(c => c.ColumnIndex == card.ColumnIndex && c.Index == card.Index).Comments;
                 }
             }
         }
 
         public static void Close()
         {
-            Driver.Close();
+            Driver.Quit();
         }
     }
 }

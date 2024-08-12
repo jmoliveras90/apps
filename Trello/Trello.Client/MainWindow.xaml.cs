@@ -30,7 +30,8 @@ namespace Trello
 
             try
             {
-                SeleniumService.StartSelenium(_configuration!.Url, username, password);
+                SeleniumService.StartSelenium(_configuration!.Url, username, password, 
+                    _configuration.Names, _configuration.Timeout, _configuration.Parallel);
             }
             catch (Exception ex)
             {
