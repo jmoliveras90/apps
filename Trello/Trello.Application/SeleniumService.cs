@@ -1,6 +1,7 @@
 ﻿using Trello.Application.Excel;
 using Trello.Selenium;
 using Trello.Selenium.Dto;
+using Trello.Selenium.Utils;
 
 namespace Trello.Application
 {
@@ -37,7 +38,7 @@ namespace Trello.Application
             }
             finally
             {
-                SeleniunManager.Close();
+                WebDriverUtils.Quit();
             }        
         }        
 

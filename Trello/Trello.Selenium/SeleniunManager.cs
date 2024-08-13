@@ -152,11 +152,6 @@ namespace Trello.Selenium
                     card.Comments = cards.Single(c => c.ColumnIndex == card.ColumnIndex && c.Index == card.Index).Comments;
                 }
             }
-        }
-
-        public static void Close()
-        {
-            Driver.Quit();
-        }
+        }        
     }
 }
