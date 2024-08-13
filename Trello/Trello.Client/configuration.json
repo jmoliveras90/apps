@@ -1,5 +1,8 @@
 ﻿{
   "Username": "",
   "Password": "",
-  "Url": ""
+  "Url": "",
+  "Names": [],
+  "Parallel": false,
+  "Timeout": 30
 }
