@@ -89,9 +89,9 @@ namespace Trello.Selenium
 
                     try
                     {
-                        comments = Wait.Until(x => Driver.FindElements(By
+                        comments = Wait.Until(x => Driver.FindElement(By
                                                    .ClassName("current-comment"))
-                        .Select(c => c.FindElement(By.TagName("p")).Text)).ToList();
+                        .FindElements(By.TagName("p")).Select(x => x.Text)).ToList();
                     }
                     catch
                     {

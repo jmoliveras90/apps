@@ -37,7 +37,7 @@ namespace Trello.Application.Excel
 
                     nameCell.Value = names.FirstOrDefault(x => card.Description.Contains(x, StringComparison.CurrentCultureIgnoreCase)) ?? string.Empty;
                     worksheet.Cell(currentRow, 3).Value = card.Description;
-                    statusCell.Value = card.Comments.FirstOrDefault() ?? string.Empty;
+                    statusCell.Value = string.Join(" ", card.Comments);
                 }
 
                 rowCount += column.Cards.Count + 3;
