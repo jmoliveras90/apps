@@ -11,14 +11,17 @@ namespace Trello
     public partial class MainWindow : Window
     {
         private Configuration? _configuration { get; set; }
+        public IEnumerable<TagItem> Tags { get; set; } = new List<TagItem>();
+
         public MainWindow()
         {
             InitializeComponent();
             LoadConfiguration();
+            SetValues();
         }
 
         private void OnBeginClick(object sender, RoutedEventArgs e)
-        {           
+        {
             var username = UserTextBox.Text;
             var password = PasswordBox.Password;
 
@@ -28,9 +31,16 @@ namespace Trello
                 return;
             }
 
+            var selectedTags = TagListBox.SelectedItems.Cast<TagItem>().Select(t => t.Name);
+
+            if (!selectedTags.Any()) {
+                MessageBox.Show("Se debe seleccionar alguna etiqueta.", "Datos incompletos");
+                return;
+            }
+
             try
             {
-                SeleniumService.StartSelenium(_configuration!.Url, username, password, 
+                SeleniumService.StartSelenium(_configuration!.Url, username, password, selectedTags,
                     _configuration.Names, _configuration.Timeout, _configuration.Parallel);
             }
             catch (Exception ex)
@@ -43,12 +53,29 @@ namespace Trello
         {
             string filePath = "./configuration.json";
             _configuration = JsonHelper.ReadConfiguration(filePath);
+        }
+
+        private void SetValues()
+        {
+            DataContext = this;
+
+            Tags = _configuration!.Tags.OrderBy(x => x)
+                .Select(x => new TagItem
+                {
+                    Name = x
+                });
 
             if (_configuration != null)
             {
                 UserTextBox.Text = _configuration.Username;
                 PasswordBox.Password = _configuration.Password;
-            }           
+            }
         }
+    }
+
+    public class TagItem
+    {
+        public required string Name { get; set; }
+        public bool IsSelected { get; set; }
     }
 }

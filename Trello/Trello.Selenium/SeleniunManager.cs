@@ -1,13 +1,14 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using System.Reflection.Emit;
 using Trello.Selenium.Dto;
 using Trello.Selenium.UI;
 using Trello.Selenium.Utils;
 
 namespace Trello.Selenium
 {
-    public class SeleniunManager(string url, string login, string password, int timeout)
+    public class SeleniunManager(string url, string login, string password, IEnumerable<string> tags, int timeout)
     {
         public static IWebDriver Driver => WebDriverUtils.GetWebDriver();
         public WebDriverWait Wait => WebDriverUtils.GetWebDriverWait(timeout);
@@ -22,7 +23,7 @@ namespace Trello.Selenium
 
             Wait.Until(ExpectedConditions.ElementIsVisible(By.Id("trello-root")));
 
-            FilterByTag();
+            FilterByTags();
             return GetBoard();
         }
 
@@ -50,10 +51,10 @@ namespace Trello.Selenium
             loginBtn.Click();
         }
 
-        public void FilterByTag()
+        public void FilterByTags()
         {
             Driver.Navigate()
-               .GoToUrl($"{url}?filter=label:PORTUGAL");
+               .GoToUrl($"{url}?filter={string.Join(",", tags.Select(tag => $"label:{tag}"))}");
         }
 
         public static IBoard GetBoard()

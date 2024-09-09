@@ -45,7 +45,9 @@ namespace Trello.Application.Excel
 
             worksheet.Columns().AdjustToContents();
 
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"Portugal_{DateTime.Now.Ticks}.xlsx");
+            string downloadsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+
+            string filePath = Path.Combine(downloadsFolder, $"Portugal_{DateTime.Now.Ticks}.xlsx");
             workbook.SaveAs(filePath);
 
             Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });

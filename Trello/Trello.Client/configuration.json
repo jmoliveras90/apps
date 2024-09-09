@@ -3,6 +3,7 @@
   "Password": "",
   "Url": "",
   "Names": [],
+  "Tags": [],
   "Parallel": false,
   "Timeout": 30
 }

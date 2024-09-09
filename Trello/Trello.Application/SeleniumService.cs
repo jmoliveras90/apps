@@ -7,9 +7,10 @@ namespace Trello.Application
 {
     public class SeleniumService
     {
-        public static void StartSelenium(string url, string user, string password, IEnumerable<string> names, int timeout, bool parallel)
+        public static void StartSelenium(string url, string user, string password,
+            IEnumerable<string> tags, IEnumerable<string> names, int timeout, bool parallel)
         {
-            var seleniumManager = new SeleniunManager(url, user, password, timeout);
+            var seleniumManager = new SeleniunManager(url, user, password, tags, timeout);
 
             try
             {
