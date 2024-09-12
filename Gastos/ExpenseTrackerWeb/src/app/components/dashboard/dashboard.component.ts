@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
       labels: Object.keys(monthlyTotals),
       datasets: [
         {
-          label: 'Gastos Mensuales',
+          label: 'Gastos',
           data: Object.values(monthlyTotals),
           backgroundColor: '#36a2eb',
         },
@@ -130,7 +130,7 @@ export class DashboardComponent implements OnInit {
       labels: months, // Los nombres de los meses
       datasets: [
         {
-          label: 'Gastos Mensuales',
+          label: 'Gastos',
           data: Object.values(monthlyTotals), // Los valores de los gastos por mes
           backgroundColor: '#36a2eb',
         },

@@ -2,11 +2,10 @@
   <h2>Dashboard</h2>
   <mat-card>
     <mat-card-header>
-      <mat-card-title></mat-card-title>
+      <mat-card-title>Gastos de este mes</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <app-widget
-        [title]="'Gastos por Categoría (Mes Actual)'"
         [total]="currentMonthExpenses"
         [chartData]="pieChartData"
         [chartType]="'pie'"
@@ -18,11 +17,11 @@
 
   <mat-card>
     <mat-card-header>
-      <mat-card-title></mat-card-title>
+      <mat-card-title>Gastos mensuales</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <app-widget
-        [title]="'Gastos Mensuales'"
+        [title]="''"
         [total]="yearExpenses"
         [chartData]="barChartData"
         [chartType]="'bar'"
