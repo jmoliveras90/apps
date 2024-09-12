@@ -17,6 +17,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgChartsModule } from 'ng2-charts';
 import {
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
@@ -39,6 +40,7 @@ import { LOCALE_ID } from '@angular/core';
 import { ExpensesModalComponent } from './components/expenses/modal/expenses-modal.component';
 import { CategoriesModalComponent } from './components/categories/modal/categories-modal.component';
 import { YearMonthNavigatorComponent } from './components/common/year-month-navigator/year-month-navigator.component';
+import { WidgetComponent } from './components/common/widget/widget.component';
 
 registerLocaleData(localeEs, 'es-ES');
 
@@ -54,6 +56,7 @@ registerLocaleData(localeEs, 'es-ES');
     ExpensesModalComponent,
     CategoriesModalComponent,
     YearMonthNavigatorComponent,
+    WidgetComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -75,6 +78,7 @@ registerLocaleData(localeEs, 'es-ES');
     MatNativeDateModule,
     FormsModule,
     MatDialogModule,
+    NgChartsModule,
     NgxsModule.forRoot([UserState]),
   ],
   providers: [

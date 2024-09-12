@@ -10,6 +10,13 @@
     (mouseleave)="collapseSidenav()"
   >
     <mat-nav-list>
+      <a
+        mat-list-item
+        *ngIf="isMobile"
+        (click)="sidenavExpanded = !sidenavExpanded"
+      >
+        <mat-icon>menu</mat-icon>
+      </a>
       <!-- Dashboard -->
       <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
         <mat-icon mat-list-icon>dashboard</mat-icon>
@@ -40,7 +47,7 @@
   </mat-sidenav>
 
   <!-- Contenido principal -->
-  <mat-sidenav-content>
+  <mat-sidenav-content (click)="sidenavExpanded = false">
     <!-- <mat-toolbar color="primary">
       <span>Gestión de gastos</span>
     </mat-toolbar> -->

@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { ClearUser, SetUser, UserState } from './store/user.state';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { Observable, filter } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { MatSidenav } from '@angular/material/sidenav';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-root',
@@ -13,14 +14,32 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class AppComponent {
   isLoggedIn$: Observable<boolean>;
+  isMobile: boolean = false;
+
   sidenavExpanded = false;
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
   constructor(
     private store: Store,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private breakpointObserver: BreakpointObserver
   ) {
+    // Escuchar los eventos de navegación
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd)) // Filtrar solo NavigationEnd
+      .subscribe(() => {
+        if (this.sidenavExpanded) {
+          this.sidenavExpanded = false;
+        }
+      });
+
+    this.breakpointObserver
+      .observe([Breakpoints.Handset])
+      .subscribe((result) => {
+        this.isMobile = result.matches; // Si la pantalla es pequeña, cambiar isMobile a true
+      });
+
     // Recuperar el usuario del LocalStorage si existe
     const storedUser = this.authService.getUserFromLocalStorage();
     if (storedUser) {

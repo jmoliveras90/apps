@@ -1,0 +1,38 @@
+.widget-card {
+  margin: 10px;
+}
+
+.chart-container {
+  width: 100%;
+  height: 200px; // Altura predeterminada
+}
+
+.large-widget {
+  width: 100%; // Gráficos más grandes (por ejemplo, barras)
+}
+
+.small-widget {
+  width: 300px; // Gráficos más pequeños (por ejemplo, gráficos circulares)
+}
+
+/* Media queries para pantallas pequeñas */
+@media (max-width: 768px) {
+  .widget-card {
+    width: 100%; // El widget ocupa el 100% en pantallas pequeñas
+    margin: 5px 0;
+  }
+
+  .chart-container {
+    height: 150px; // Ajustar la altura en pantallas pequeñas
+  }
+}
+
+mat-card-header {
+  padding-bottom: 0; // Reducir el espacio entre el título y el gráfico
+}
+
+mat-card-title {
+  font-size: 16px; // Título más pequeño
+  font-weight: bold;
+  text-align: center;
+}

@@ -1,0 +1,47 @@
+.dashboard-widgets {
+  display: flex;
+  flex-wrap: wrap; // Permite que los widgets se ajusten en varias líneas si es necesario
+  justify-content: space-around; // Distribuye los widgets de manera uniforme
+  gap: 10px; // Espacio entre los widgets
+}
+
+.widget-card {
+  width: 300px; // Ancho por defecto para pantallas más grandes
+  margin: 10px;
+}
+
+.chart-container {
+  width: 100%;
+  height: 200px; // Ajuste la altura del gráfico
+}
+
+mat-card-header {
+  padding-bottom: 0; // Reduce el espacio entre el título y el gráfico
+}
+
+mat-card-title {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Media queries para pantallas pequeñas */
+@media (max-width: 768px) {
+  .widget-card {
+    width: 100%; // El widget toma el 100% del ancho en pantallas pequeñas
+    margin: 5px 0; // Reducir el margen
+  }
+
+  .chart-container {
+    height: 150px; // Reducir la altura del gráfico en pantallas pequeñas
+  }
+}
+
+mat-card {
+  margin-bottom: 10px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
