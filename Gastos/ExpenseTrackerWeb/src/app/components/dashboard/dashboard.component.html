@@ -1,30 +1,32 @@
-<h2>Dashboard</h2>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title></mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <app-widget
-      [title]="'Gastos por Categoría (Mes Actual)'"
-      [chartData]="pieChartData"
-      [chartType]="'pie'"
-      [chartOptions]="pieChartOptions"
-    >
-    </app-widget>
-  </mat-card-content>
-</mat-card>
+<div class="dashboard-container">
+  <h2>Dashboard</h2>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-widget
+        [title]="'Gastos por Categoría (Mes Actual)'"
+        [chartData]="pieChartData"
+        [chartType]="'pie'"
+        [chartOptions]="pieChartOptions"
+      >
+      </app-widget>
+    </mat-card-content>
+  </mat-card>
 
-<mat-card>
-  <mat-card-header>
-    <mat-card-title></mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <app-widget
-      [title]="'Gastos Mensuales'"
-      [chartData]="barChartData"
-      [chartType]="'bar'"
-      [chartOptions]="barChartOptions"
-    >
-    </app-widget>
-  </mat-card-content>
-</mat-card>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-widget
+        [title]="'Gastos Mensuales'"
+        [chartData]="barChartData"
+        [chartType]="'bar'"
+        [chartOptions]="barChartOptions"
+      >
+      </app-widget>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,3 +1,13 @@
+.dashboard-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
 .dashboard-widgets {
   display: flex;
   flex-wrap: wrap; // Permite que los widgets se ajusten en varias líneas si es necesario
