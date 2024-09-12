@@ -13,7 +13,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class AppComponent {
   isLoggedIn$: Observable<boolean>;
-  opened: boolean = false;
+  sidenavExpanded = false;
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
   constructor(
@@ -37,7 +37,13 @@ export class AppComponent {
     this.router.navigate(['/login']);
   }
 
-  onSidenavOpened(): void {}
+  // Expande el sidenav al hacer hover
+  expandSidenav(): void {
+    this.sidenavExpanded = true;
+  }
 
-  onSidenavClosed(): void {}
+  // Contrae el sidenav al quitar el hover
+  collapseSidenav(): void {
+    this.sidenavExpanded = false;
+  }
 }

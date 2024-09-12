@@ -1,66 +1,49 @@
-<mat-sidenav-container class="sidenav-container" autosize>
-  <!-- Menú lateral -->
+<mat-sidenav-container class="sidenav-container">
+  <!-- Sidebar (Sidenav) -->
   <mat-sidenav
-    *ngIf="isLoggedIn$ | async"
     #sidenav
-    mode="over"
+    mode="side"
+    [opened]="true"
     class="sidenav"
-    [(opened)]="opened"
+    [class.expanded]="sidenavExpanded"
+    (mouseenter)="expandSidenav()"
+    (mouseleave)="collapseSidenav()"
   >
     <mat-nav-list>
       <!-- Dashboard -->
-      <a
-        mat-list-item
-        routerLink="/dashboard"
-        routerLinkActive="active"
-        (click)="sidenav.toggle()"
-      >
-        <mat-icon>dashboard</mat-icon>
-        <span>Dashboard</span>
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
+        <mat-icon mat-list-icon>dashboard</mat-icon>
+        <span *ngIf="sidenavExpanded">Dashboard</span>
       </a>
 
       <!-- Categories -->
-      <a
-        mat-list-item
-        routerLink="/categories"
-        routerLinkActive="active"
-        (click)="sidenav.toggle()"
-      >
-        <mat-icon>category</mat-icon>
-        <span>Categorías</span>
+      <a mat-list-item routerLink="/categories" routerLinkActive="active">
+        <mat-icon mat-list-icon>category</mat-icon>
+        <span *ngIf="sidenavExpanded">Categorías</span>
       </a>
 
       <!-- Expenses -->
-      <a
-        mat-list-item
-        routerLink="/expenses"
-        routerLinkActive="active"
-        (click)="sidenav.toggle()"
-      >
-        <mat-icon>attach_money</mat-icon>
-        <span>Gastos</span>
+      <a mat-list-item routerLink="/expenses" routerLinkActive="active">
+        <mat-icon mat-list-icon>attach_money</mat-icon>
+        <span *ngIf="sidenavExpanded">Gastos</span>
       </a>
+
+      <!-- Separador -->
+      <mat-divider></mat-divider>
 
       <!-- Logout -->
       <a mat-list-item (click)="logout()">
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Salir</span>
+        <mat-icon mat-list-icon>exit_to_app</mat-icon>
+        <span *ngIf="sidenavExpanded">Salir</span>
       </a>
     </mat-nav-list>
   </mat-sidenav>
 
   <!-- Contenido principal -->
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <button
-        *ngIf="isLoggedIn$ | async"
-        mat-icon-button
-        (click)="sidenav.toggle()"
-      >
-        <mat-icon>menu</mat-icon>
-      </button>
+    <!-- <mat-toolbar color="primary">
       <span>Gestión de gastos</span>
-    </mat-toolbar>
+    </mat-toolbar> -->
 
     <router-outlet></router-outlet>
   </mat-sidenav-content>
