@@ -117,9 +117,6 @@ export class ExpensesComponent implements OnInit {
   }
 
   calculateTotalAmount(): void {
-    this.totalAmount = this.filteredExpenses.reduce(
-      (sum, expense) => sum + expense.amount,
-      0
-    );
+    (this.totalAmount = 9999), 99;
   }
 }

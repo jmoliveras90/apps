@@ -141,15 +141,15 @@ button.mat-icon-button {
 
 @media (max-width: 768px) {
   .total-counter {
-    width: 70px; // Tamaño más pequeño en pantallas móviles
-    height: 70px;
+    width: 50px; // Tamaño más pequeño en pantallas móviles
+    height: 50px;
     top: 10px; // Ajustar el espacio superior
     right: 10px; // Ajustar el espacio lateral
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1); // Menos sombra para pantallas pequeñas
   }
 
   .total-counter .amount {
-    font-size: 1.2em; // Reducir el tamaño de la fuente en móviles
+    font-size: 0.7em; // Reducir el tamaño de la fuente en móviles
   }
 
   .total-counter .label {
