@@ -1,0 +1,40 @@
+.sidenav-container {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 250px;
+  background-color: #f4f4f4;
+}
+
+.mat-nav-list a {
+  display: flex;
+  align-items: center;
+  color: #333;
+  padding: 10px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.mat-nav-list a.active {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.mat-nav-list a:hover {
+  background-color: #ddd;
+}
+
+.mat-icon {
+  margin-right: 15px;
+}
+
+.mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+button.mat-icon-button {
+  margin-right: 20px;
+}

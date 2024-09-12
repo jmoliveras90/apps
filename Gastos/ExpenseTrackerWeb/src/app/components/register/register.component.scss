@@ -1,0 +1,27 @@
+.login-container,
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+mat-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  mat-card {
+    padding: 10px;
+  }
+
+  button {
+    font-size: 14px;
+  }
+}

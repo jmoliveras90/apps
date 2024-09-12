@@ -1,0 +1,67 @@
+<mat-sidenav-container class="sidenav-container" autosize>
+  <!-- Menú lateral -->
+  <mat-sidenav
+    *ngIf="isLoggedIn$ | async"
+    #sidenav
+    mode="over"
+    class="sidenav"
+    [(opened)]="opened"
+  >
+    <mat-nav-list>
+      <!-- Dashboard -->
+      <a
+        mat-list-item
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        (click)="sidenav.toggle()"
+      >
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </a>
+
+      <!-- Categories -->
+      <a
+        mat-list-item
+        routerLink="/categories"
+        routerLinkActive="active"
+        (click)="sidenav.toggle()"
+      >
+        <mat-icon>category</mat-icon>
+        <span>Categorías</span>
+      </a>
+
+      <!-- Expenses -->
+      <a
+        mat-list-item
+        routerLink="/expenses"
+        routerLinkActive="active"
+        (click)="sidenav.toggle()"
+      >
+        <mat-icon>attach_money</mat-icon>
+        <span>Gastos</span>
+      </a>
+
+      <!-- Logout -->
+      <a mat-list-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Salir</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Contenido principal -->
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        *ngIf="isLoggedIn$ | async"
+        mat-icon-button
+        (click)="sidenav.toggle()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Gestión de gastos</span>
+    </mat-toolbar>
+
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

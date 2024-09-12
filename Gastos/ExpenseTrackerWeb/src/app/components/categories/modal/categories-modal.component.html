@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>
+  {{ data.category ? "Modificar Categoría" : "Nueva Categoría" }}
+</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="categoryForm" class="category-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error
+        *ngIf="
+          categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched
+        "
+      >
+        El nombre de la categoría es obligatorio.
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+
+<div mat-dialog-actions class="dialog-actions">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onSave()"
+    [disabled]="categoryForm.invalid"
+  >
+    Guardar
+  </button>
+</div>

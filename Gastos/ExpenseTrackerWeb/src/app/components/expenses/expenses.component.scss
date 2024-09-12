@@ -1,0 +1,41 @@
+.expenses-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.expense-form {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+mat-form-field {
+  flex: 1;
+  min-width: 200px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-elevation-z8 {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button.mat-icon-button {
+  margin-right: 5px;
+}
