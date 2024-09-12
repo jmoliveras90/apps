@@ -24,6 +24,13 @@ export class ExpensesComponent implements OnInit {
   dataSource = new MatTableDataSource<Expense>();
   filteredExpenses: Expense[] = [];
   categories: Category[] = [];
+  totalAmount: number = 0;
+  countUpOptions = {
+    decimalPlaces: 2,
+    decimal: ',',
+    separator: '.',
+    suffix: '€',
+  };
 
   constructor(
     private expenseService: ExpenseService,
@@ -40,6 +47,7 @@ export class ExpensesComponent implements OnInit {
     this.expenseService.getExpenses().subscribe((expenses) => {
       this.dataSource.data = expenses;
       this.filteredExpenses = expenses;
+      this.calculateTotalAmount();
     });
   }
 
@@ -104,5 +112,14 @@ export class ExpensesComponent implements OnInit {
       const expenseDate = moment(expense.date);
       return expenseDate.month() + 1 === month && expenseDate.year() === year;
     });
+
+    this.calculateTotalAmount();
+  }
+
+  calculateTotalAmount(): void {
+    this.totalAmount = this.filteredExpenses.reduce(
+      (sum, expense) => sum + expense.amount,
+      0
+    );
   }
 }

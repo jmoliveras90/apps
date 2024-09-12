@@ -1,6 +1,13 @@
 <div class="expenses-container">
   <h2>Gastos</h2>
 
+  <div class="total-counter">
+    <span class="amount" [countUp]="totalAmount" [options]="countUpOptions"
+      >0</span
+    >
+    <span class="label">Total</span>
+  </div>
+
   <!-- Componente común de navegación por mes y año -->
   <app-year-month-navigator
     (dateChanged)="onDateChanged($event)"

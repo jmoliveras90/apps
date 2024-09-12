@@ -3,6 +3,9 @@
     <mat-card-title>{{ title }}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
+    <div class="total-amount-widget">
+      <p [countUp]="total" [options]="countUpOptions">0</p>
+    </div>
     <div class="chart-container">
       <canvas
         baseChart

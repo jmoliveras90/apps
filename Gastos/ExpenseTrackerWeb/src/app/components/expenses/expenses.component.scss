@@ -110,3 +110,50 @@ button.mat-icon-button {
     font-size: 16px; // Tamaño más pequeño del ícono
   }
 }
+
+.total-counter {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: white; // Fondo blanco
+  border: 3px solid #0d47a1; // Borde azul oscuro
+  border-radius: 50%; // Hace que sea redondo
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column; // Colocar el número y el texto "Total" en columnas
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); // Sombra para darle relieve
+}
+
+.total-counter .amount {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #0d47a1; // Azul oscuro para el texto del número
+}
+
+.total-counter .label {
+  font-size: 0.8em;
+  color: #0d47a1; // Azul oscuro para el texto "Total"
+  margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+  .total-counter {
+    width: 70px; // Tamaño más pequeño en pantallas móviles
+    height: 70px;
+    top: 10px; // Ajustar el espacio superior
+    right: 10px; // Ajustar el espacio lateral
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1); // Menos sombra para pantallas pequeñas
+  }
+
+  .total-counter .amount {
+    font-size: 1.2em; // Reducir el tamaño de la fuente en móviles
+  }
+
+  .total-counter .label {
+    font-size: 0.7em; // Reducir el tamaño del texto "Total"
+    margin-top: 2px; // Menor espacio entre el número y el texto
+  }
+}

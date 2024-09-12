@@ -7,6 +7,7 @@ import { ChartConfiguration, ChartType } from 'chart.js';
   styleUrls: ['./widget.component.scss'],
 })
 export class WidgetComponent implements OnInit {
+  @Input() total!: number;
   @Input() chartData!: ChartConfiguration['data']; // Datos para el gráfico
   @Input() chartType: ChartType = 'pie'; // Tipo de gráfico (pie, bar, line, etc.)
   @Input() chartOptions: ChartConfiguration['options'] = {
@@ -15,6 +16,13 @@ export class WidgetComponent implements OnInit {
   }; // Opciones del gráfico
   @Input() title: string = ''; // Título del widget
 
+  countUpOptions = {
+    decimalPlaces: 2,
+    decimal: ',',
+    separator: '.',
+    prefix: 'Total: ',
+    suffix: '€',
+  };
   constructor() {}
 
   ngOnInit(): void {}

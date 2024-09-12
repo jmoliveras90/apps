@@ -41,6 +41,7 @@ import { ExpensesModalComponent } from './components/expenses/modal/expenses-mod
 import { CategoriesModalComponent } from './components/categories/modal/categories-modal.component';
 import { YearMonthNavigatorComponent } from './components/common/year-month-navigator/year-month-navigator.component';
 import { WidgetComponent } from './components/common/widget/widget.component';
+import { CountUpModule } from 'ngx-countup';
 
 registerLocaleData(localeEs, 'es-ES');
 
@@ -79,6 +80,7 @@ registerLocaleData(localeEs, 'es-ES');
     FormsModule,
     MatDialogModule,
     NgChartsModule,
+    CountUpModule,
     NgxsModule.forRoot([UserState]),
   ],
   providers: [

@@ -28,6 +28,9 @@ export class DashboardComponent implements OnInit {
     },
   };
 
+  currentMonthExpenses = 0;
+  yearExpenses = 0;
+
   constructor(private expensesService: ExpenseService) {}
 
   ngOnInit(): void {
@@ -86,6 +89,10 @@ export class DashboardComponent implements OnInit {
         },
       ],
     };
+
+    this.currentMonthExpenses = expensesThisMonth
+      .map((e) => e.amount)
+      .reduce((a, b) => a + b);
   }
 
   processMonthlyExpenses(expenses: Expense[]): void {
@@ -129,5 +136,7 @@ export class DashboardComponent implements OnInit {
         },
       ],
     };
+
+    this.yearExpenses = Object.values(monthlyTotals).reduce((a, b) => a + b);
   }
 }
