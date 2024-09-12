@@ -16,6 +16,7 @@ h2 {
 .expenses-table-container {
   max-height: 400px; // Limita la altura de la tabla
   overflow-y: auto; // Habilita el scroll vertical
+  overflow-x: auto;
 }
 
 .expenses-table {
@@ -74,4 +75,38 @@ button.mat-icon-button {
 
 .expenses-table-container::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px; // Espacio entre los botones
+}
+
+/* Media query para pantallas pequeñas */
+@media (max-width: 768px) {
+  th,
+  td {
+    padding: 4px 8px; // Reduce el espacio en pantallas pequeñas
+    font-size: 12px; // Fuente más pequeña para mejor legibilidad
+  }
+
+  .expenses-table-container {
+    overflow-x: auto; // Scroll horizontal en pantallas pequeñas
+    -webkit-overflow-scrolling: touch; // Mejora la experiencia de scroll en móviles
+  }
+
+  .action-buttons {
+    justify-content: flex-start;
+    gap: 5px; // Menor espacio entre los botones en pantallas pequeñas
+  }
+
+  button.mat-icon-button {
+    width: 32px; // Tamaño más pequeño para los botones en pantallas pequeñas
+    height: 32px;
+  }
+
+  mat-icon {
+    font-size: 16px; // Tamaño más pequeño del ícono
+  }
 }
