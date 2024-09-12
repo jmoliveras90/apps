@@ -1,0 +1,9 @@
+<div class="month-year-navigation">
+  <button mat-icon-button (click)="prevMonth()">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  <span class="current-date">{{ getFormattedDate() }}</span>
+  <button mat-icon-button (click)="nextMonth()">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>

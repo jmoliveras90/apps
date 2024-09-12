@@ -15,10 +15,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import {
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  MatNativeDateModule,
+} from '@angular/material/core';
 
 import { NgxsModule } from '@ngxs/store';
 import { UserState } from './store/user.state';
@@ -35,6 +38,7 @@ import localeEs from '@angular/common/locales/es';
 import { LOCALE_ID } from '@angular/core';
 import { ExpensesModalComponent } from './components/expenses/modal/expenses-modal.component';
 import { CategoriesModalComponent } from './components/categories/modal/categories-modal.component';
+import { YearMonthNavigatorComponent } from './components/common/year-month-navigator/year-month-navigator.component';
 
 registerLocaleData(localeEs, 'es-ES');
 
@@ -49,6 +53,7 @@ registerLocaleData(localeEs, 'es-ES');
     ConfirmDialogComponent,
     ExpensesModalComponent,
     CategoriesModalComponent,
+    YearMonthNavigatorComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -65,7 +70,6 @@ registerLocaleData(localeEs, 'es-ES');
     MatListModule,
     MatIconModule,
     MatTableModule,
-    MatPaginatorModule,
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -81,6 +85,20 @@ registerLocaleData(localeEs, 'es-ES');
     },
     { provide: LOCALE_ID, useValue: 'es-ES' },
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'DD/MM/YYYY',
+        },
+        display: {
+          dateInput: 'DD/MM/YYYY',
+          monthYearLabel: 'MM YYYY',
+          dateA11yLabel: 'DD/MM/YYYY',
+          monthYearA11yLabel: 'MM YYYY',
+        },
+      },
+    },
   ],
   bootstrap: [AppComponent],
 })

@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Category } from 'src/app/interfaces/category';
 import { Expense } from 'src/app/interfaces/expense';
 import { CategoryService } from 'src/app/services/category.service';
 import { ExpenseService } from 'src/app/services/expense.service';
 import { ExpensesModalComponent } from './modal/expenses-modal.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-expenses',
@@ -22,9 +22,8 @@ export class ExpensesComponent implements OnInit {
     'actions',
   ];
   dataSource = new MatTableDataSource<Expense>();
+  filteredExpenses: Expense[] = [];
   categories: Category[] = [];
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private expenseService: ExpenseService,
@@ -40,7 +39,7 @@ export class ExpensesComponent implements OnInit {
   loadExpenses(): void {
     this.expenseService.getExpenses().subscribe((expenses) => {
       this.dataSource.data = expenses;
-      this.dataSource.paginator = this.paginator;
+      this.filteredExpenses = expenses;
     });
   }
 
@@ -92,5 +91,18 @@ export class ExpensesComponent implements OnInit {
         this.loadExpenses();
       });
     }
+  }
+
+  onDateChanged(event: { month: number; year: number }) {
+    const { month, year } = event;
+    this.filterExpensesByMonthAndYear(month, year);
+  }
+
+  // Filtra los gastos por mes y año
+  filterExpensesByMonthAndYear(month: number, year: number) {
+    this.filteredExpenses = this.dataSource.data.filter((expense) => {
+      const expenseDate = moment(expense.date);
+      return expenseDate.month() + 1 === month && expenseDate.year() === year;
+    });
   }
 }

@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
 import { CategoryService } from 'src/app/services/category.service';
-import { BaseCategory, Category } from 'src/app/interfaces/category';
+import { Category } from 'src/app/interfaces/category';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { CategoriesModalComponent } from './modal/categories-modal.component';
@@ -17,8 +16,6 @@ export class CategoriesComponent implements OnInit {
   dataSource = new MatTableDataSource<Category>();
   newCategory: string = '';
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
   constructor(
     private categoryService: CategoryService,
     private dialog: MatDialog
@@ -32,7 +29,6 @@ export class CategoriesComponent implements OnInit {
   loadCategories(): void {
     this.categoryService.getCategories().subscribe((categories) => {
       this.dataSource.data = categories;
-      this.dataSource.paginator = this.paginator; // Añadir paginación
     });
   }
   addCategory(): void {
