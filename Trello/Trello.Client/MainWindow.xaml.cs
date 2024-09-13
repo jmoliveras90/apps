@@ -24,7 +24,7 @@ namespace Trello
         {
             var username = UserTextBox.Text;
             var password = PasswordBox.Password;
-
+            var filter = FilterBox.Text ?? string.Empty;
             var excluding = Excluding.IsChecked ?? false;
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
@@ -36,13 +36,12 @@ namespace Trello
             var selectedTags = TagListBox.SelectedItems.Cast<TagItem>().Select(t => t.Name);
 
             if (!selectedTags.Any()) {
-                MessageBox.Show("Se debe seleccionar alguna etiqueta.", "Datos incompletos");
-                return;
+                selectedTags = _configuration!.Tags;
             }
 
             try
             {
-                SeleniumService.StartSelenium(_configuration!.Url, username, password, selectedTags, excluding,
+                SeleniumService.StartSelenium(_configuration!.Url, username, password, filter, selectedTags, excluding,
                     _configuration.Names, _configuration.Timeout, _configuration.Parallel);
             }
             catch (Exception ex)
@@ -72,6 +71,11 @@ namespace Trello
                 UserTextBox.Text = _configuration.Username;
                 PasswordBox.Password = _configuration.Password;
             }
+        }
+
+        private void TagListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Excluding.IsEnabled = TagListBox.SelectedItems.Count > 0;
         }
     }
 

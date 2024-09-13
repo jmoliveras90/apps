@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Trello" Height="480" Width="450">
+        Title="Trello" Height="500" Width="450">
 
     <Window.Resources>
         <Style TargetType="TextBlock">
@@ -47,6 +47,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -59,13 +60,16 @@
 
         <TextBlock Text="Contraseña:" Margin="10" VerticalAlignment="Center" Grid.Row="1"/>
         <PasswordBox x:Name="PasswordBox" Grid.Column="1" Margin="10" VerticalAlignment="Center" Grid.Row="1"/>
+        
+        <TextBlock Text="Filtro:" Margin="10" VerticalAlignment="Center" Grid.Row="2"/>
+        <TextBox x:Name="FilterBox" Grid.Column="1" Margin="10" VerticalAlignment="Center" Grid.Row="2"/>
 
-        <TextBlock Text="Etiquetas:" Margin="10" VerticalAlignment="Center" Grid.Row="2"/>
-        <ListBox Grid.Row="2" Grid.Column="1" Name="TagListBox" Width="320" Height="auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10"
-                 ItemsSource="{Binding Tags}" DisplayMemberPath="Name" SelectionMode="Multiple"/>
+        <TextBlock Text="Etiquetas:" Margin="10" VerticalAlignment="Center" Grid.Row="3"/>
+        <ListBox Grid.Row="3" Grid.Column="1" Name="TagListBox" Width="320" Height="auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10"
+                 ItemsSource="{Binding Tags}" DisplayMemberPath="Name" SelectionMode="Multiple" SelectionChanged="TagListBox_SelectionChanged"/>
 
 
-        <CheckBox Grid.Row="3" Grid.Column="1" Name="Excluding">Excluyentes</CheckBox>
+        <CheckBox Grid.Row="4" Grid.Column="1" Name="Excluding" IsEnabled="False">Excluyentes</CheckBox>
         <Button Content="Iniciar" Grid.Row="4" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Center" Click="OnBeginClick"/>
     </Grid>
 </Window>
