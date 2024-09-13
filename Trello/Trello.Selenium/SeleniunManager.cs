@@ -8,7 +8,7 @@ using Trello.Selenium.Utils;
 
 namespace Trello.Selenium
 {
-    public class SeleniunManager(string url, string login, string password, IEnumerable<string> tags, int timeout)
+    public class SeleniunManager(string url, string login, string password, IEnumerable<string> tags, bool excluding, int timeout)
     {
         public static IWebDriver Driver => WebDriverUtils.GetWebDriver();
         public WebDriverWait Wait => WebDriverUtils.GetWebDriverWait(timeout);
@@ -23,7 +23,7 @@ namespace Trello.Selenium
 
             Wait.Until(ExpectedConditions.ElementIsVisible(By.Id("trello-root")));
 
-            FilterByTags();
+            FilterByTags(excluding);
             return GetBoard();
         }
 
@@ -51,10 +51,10 @@ namespace Trello.Selenium
             loginBtn.Click();
         }
 
-        public void FilterByTags()
+        public void FilterByTags(bool excluding)
         {
             Driver.Navigate()
-               .GoToUrl($"{url}?filter={string.Join(",", tags.Select(tag => $"label:{tag}"))}");
+               .GoToUrl($"{url}?filter={string.Join(",", tags.Select(tag => $"label:{tag}"))}{(excluding ? ",mode:and" : string.Empty)}");
         }
 
         public static IBoard GetBoard()
@@ -86,13 +86,16 @@ namespace Trello.Selenium
                     Wait.Until(ExpectedConditions.ElementIsVisible(By
                                                .ClassName("card-detail-window")));
 
+                    Wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.ClassName("js-loading-card-actions")));
+                    Wait.Until(ExpectedConditions.ElementExists(By.ClassName("js-list-actions")));
+
                     var comments = new List<string>();
 
                     try
                     {
-                        comments = Wait.Until(x => Driver.FindElement(By
+                        comments = Driver.FindElement(By
                                                    .ClassName("current-comment"))
-                        .FindElements(By.TagName("p")).Select(x => x.Text)).ToList();
+                        .FindElements(By.TagName("p")).Select(x => x.Text).ToList();
                     }
                     catch
                     {

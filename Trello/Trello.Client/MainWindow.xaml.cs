@@ -25,6 +25,8 @@ namespace Trello
             var username = UserTextBox.Text;
             var password = PasswordBox.Password;
 
+            var excluding = Excluding.IsChecked ?? false;
+
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 MessageBox.Show("Se debe introducir usuario y contraseña.", "Datos incompletos");
@@ -40,7 +42,7 @@ namespace Trello
 
             try
             {
-                SeleniumService.StartSelenium(_configuration!.Url, username, password, selectedTags,
+                SeleniumService.StartSelenium(_configuration!.Url, username, password, selectedTags, excluding,
                     _configuration.Names, _configuration.Timeout, _configuration.Parallel);
             }
             catch (Exception ex)
