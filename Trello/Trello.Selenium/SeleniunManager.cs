@@ -1,8 +1,9 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-using System.Reflection.Emit;
+using System.Text.Json;
 using Trello.Selenium.Dto;
+using Trello.Selenium.Models;
 using Trello.Selenium.UI;
 using Trello.Selenium.Utils;
 
@@ -16,14 +17,15 @@ namespace Trello.Selenium
         public IBoard Start()
         {
             Driver.Manage().Window.Maximize();
-            Driver.Navigate()
-                .GoToUrl(url);
+            Driver.Navigate().GoToUrl(url);
 
             Login();
-
             Wait.Until(ExpectedConditions.ElementIsVisible(By.Id("trello-root")));
 
             FilterByTags(excluding);
+
+            Wait.Until(ExpectedConditions.ElementIsVisible(By.Id("trello-root")));
+
             return GetBoard();
         }
 
@@ -59,103 +61,41 @@ namespace Trello.Selenium
 
         public static IBoard GetBoard()
         {
-            return new Board(By.Id("board"));
+            return new UI.Board(By.Id("board"));
         }
 
-        public void GetComments(BoardDto board, bool parallel)
+        public void GetComments(BoardDto board)
         {
-            if (parallel)
-            {              
-                LoadParallel(board);
-            }
-            else
+
+            // Extraer el contenido del cuerpo de la página (que debería ser el JSON)
+            string json = string.Empty;
+
+            do
             {
-                LoadSequential(board);
-            }           
-        }
-
-
-        private void LoadSequential(BoardDto board)
-        {
-            foreach (var column in board.Columns)
-            {
-                foreach (var card in column.Cards)
-                {
-                    Driver.Navigate().GoToUrl(card.Href);
-
-                    Wait.Until(ExpectedConditions.ElementIsVisible(By
-                                               .ClassName("card-detail-window")));
-
-                    Wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.ClassName("js-loading-card-actions")));
-                    Wait.Until(ExpectedConditions.ElementExists(By.ClassName("js-list-actions")));
-
-                    var comments = new List<string>();
-
-                    try
-                    {
-                        comments = Driver.FindElement(By
-                                                   .ClassName("current-comment"))
-                        .FindElements(By.TagName("p")).Select(x => x.Text).ToList();
-                    }
-                    catch
-                    {
-                        comments = [];
-                    }
-
-                    card.Comments = comments;
-                }
+                Thread.Sleep(50);
+                json = Wait.Until(ExpectedConditions.ElementIsVisible(By.TagName("pre"))).Text;
             }
-        }
+            while (!json.EndsWith("}"));
 
-        private void LoadParallel(BoardDto board)
-        {
-            var cards = board.Columns.SelectMany(c => c.Cards).ToList();
+            var jsonData = JsonSerializer.Deserialize<Rootobject>(json);
 
-            if (cards.Count == 0)
-            {
-                return;
-            }
-
-            foreach (var card in cards)
-            {
-                ((IJavaScriptExecutor)Driver).ExecuteScript("window.open('" + card.Href + "', '_blank');");
-                Thread.Sleep(100);
-            }
-
-            for (int i = 1; i < Driver.WindowHandles.Count; i++)
-            {
-                string? handle = Driver.WindowHandles[i];
-                Driver.SwitchTo().Window(handle);
-
-                Wait.Until(ExpectedConditions.ElementIsVisible(By
-                                               .ClassName("card-detail-window")));
-
-                var title = Wait.Until(ExpectedConditions.ElementIsVisible(By
-                                                                  .XPath("//*[@id=\"js-dialog-title\"]"))).Text;
-
-                var comments = new List<string>();
-
-                try
-                {
-                    comments = Wait.Until(x => Driver.FindElements(By
-                                               .ClassName("current-comment"))
-                    .Select(c => c.FindElement(By.TagName("p")).Text)).ToList();
-                }
-                catch
-                {
-                    comments = [];
-                }
-
-                cards.Single(c => c.Description == title).Comments = comments;
-            }
+            Driver.Quit();
 
             foreach (var column in board.Columns)
             {
                 foreach (var card in column.Cards)
                 {
-                    card.Comments = cards.Single(c => c.ColumnIndex == card.ColumnIndex && c.Index == card.Index).Comments;
+                    card.Comment = jsonData?.actions.Where(a => a.type == "commentCard" && a.data.card.name == card.Description).Select(x => x.data.text).FirstOrDefault() ?? string.Empty;
+
+
+
                 }
             }
-        }        
+        }
+
+        public void GoToJsonUrl()
+        {
+            Driver.Navigate().GoToUrl($"{url}.json");
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace Trello.Application.Excel
 
                     nameCell.Value = names.FirstOrDefault(x => card.Description.Contains(x, StringComparison.CurrentCultureIgnoreCase)) ?? string.Empty;
                     worksheet.Cell(currentRow, 3).Value = card.Description;
-                    statusCell.Value = string.Join(" ", card.Comments);
+                    statusCell.Value = card.Comment.Replace("\n", " ").Replace("\\", "");
                 }
 
                 rowCount += column.Cards.Count + 3;
@@ -47,7 +47,7 @@ namespace Trello.Application.Excel
 
             string downloadsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
 
-            string filePath = Path.Combine(downloadsFolder, $"Portugal_{DateTime.Now.Ticks}.xlsx");
+            string filePath = Path.Combine(downloadsFolder, $"Trello_{DateTime.Now.Ticks}.xlsx");
             workbook.SaveAs(filePath);
 
             Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });

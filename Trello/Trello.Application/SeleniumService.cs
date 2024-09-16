@@ -8,7 +8,7 @@ namespace Trello.Application
     public class SeleniumService
     {
         public static void StartSelenium(string url, string user, string password, string filter,
-            IEnumerable<string> tags, bool excluding, IEnumerable<string> names, int timeout, bool parallel)
+            IEnumerable<string> tags, bool excluding, IEnumerable<string> names, int timeout)
         {
             var seleniumManager = new SeleniunManager(url, user, password, tags, excluding, timeout);
 
@@ -22,16 +22,18 @@ namespace Trello.Application
                         Title = column.Title,
                         Cards = column.Cards.Where(c => c.Description
                             .Contains(filter, StringComparison.CurrentCultureIgnoreCase)).Select((card, j) => new CardDto
-                                {
-                                    Index = j,
-                                    ColumnIndex = i,
-                                    Description = card.Description,
-                                    Href = card.Href,
-                                }).ToList()
+                            {
+                                Index = j,
+                                ColumnIndex = i,
+                                Description = card.Description,
+                                Href = card.Href,
+                            }).ToList()
                     }).ToList()
                 };
 
-                seleniumManager.GetComments(boardDto, parallel);
+                seleniumManager.GoToJsonUrl();
+                seleniumManager.GetComments(boardDto);
+
                 ExportData(boardDto, names);
             }
             catch
@@ -41,8 +43,8 @@ namespace Trello.Application
             finally
             {
                 WebDriverUtils.Quit();
-            }        
-        }        
+            }
+        }       
 
         public static void ExportData(BoardDto board, IEnumerable<string> names)
         {

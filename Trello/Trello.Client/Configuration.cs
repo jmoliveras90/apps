@@ -8,6 +8,5 @@
         public IEnumerable<string> Tags { get; set; }
         public required IEnumerable<string> Names { get; set; }
         public required int Timeout { get; set; }
-        public required bool Parallel { get; set; }
     }
 }

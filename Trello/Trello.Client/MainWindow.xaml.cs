@@ -42,7 +42,7 @@ namespace Trello
             try
             {
                 SeleniumService.StartSelenium(_configuration!.Url, username, password, filter, selectedTags, excluding,
-                    _configuration.Names, _configuration.Timeout, _configuration.Parallel);
+                    _configuration.Names, _configuration.Timeout);
             }
             catch (Exception ex)
             {
