@@ -30,6 +30,8 @@ export class ExpensesModalComponent {
         Validators.required,
       ],
       categoryId: [data.expense?.categoryId || '', Validators.required],
+      isRecurring: [false],
+      endDate: [null],
     });
   }
 

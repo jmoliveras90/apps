@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: 496px;
 }
 
 mat-form-field {
@@ -17,4 +18,50 @@ mat-form-field {
 
 button {
   min-width: 100px;
+}
+
+.recurring-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.recurring-yes {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.recurring-no {
+  color: #f44336;
+  font-weight: bold;
+}
+
+:host
+  ::ng-deep
+  .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled)
+  .mdc-switch__shadow {
+  background-color: #4caf50;
+}
+
+:host
+  ::ng-deep
+  .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled)
+  .mdc-switch__track::after {
+  background-color: rgba(76, 175, 80, 0.5) !important;
+}
+
+:host
+  ::ng-deep
+  .mat-mdc-slide-toggle
+  .mdc-switch--unselected
+  .mdc-switch__shadow:not(.mat-disabled) {
+  background-color: #f44336;
+}
+
+:host
+  ::ng-deep
+  .mat-mdc-slide-toggle
+  .mdc-switch--unselected
+  .mdc-switch__track::before {
+  background-color: #f5c2c1 !important;
 }

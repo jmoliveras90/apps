@@ -23,6 +23,7 @@ import {
   MAT_DATE_LOCALE,
   MatNativeDateModule,
 } from '@angular/material/core';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { NgxsModule } from '@ngxs/store';
 import { UserState } from './store/user.state';
@@ -77,6 +78,7 @@ registerLocaleData(localeEs, 'es-ES');
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSlideToggleModule,
     FormsModule,
     MatDialogModule,
     NgChartsModule,

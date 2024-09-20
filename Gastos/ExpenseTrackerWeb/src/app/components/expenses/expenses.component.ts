@@ -19,6 +19,8 @@ export class ExpensesComponent implements OnInit {
     'amount',
     'date',
     'categoryId',
+    'isRecurring',
+    'endDate',
     'actions',
   ];
   dataSource = new MatTableDataSource<Expense>();
@@ -106,11 +108,27 @@ export class ExpensesComponent implements OnInit {
     this.filterExpensesByMonthAndYear(month, year);
   }
 
-  // Filtra los gastos por mes y año
   filterExpensesByMonthAndYear(month: number, year: number) {
     this.filteredExpenses = this.dataSource.data.filter((expense) => {
       const expenseDate = moment(expense.date);
-      return expenseDate.month() + 1 === month && expenseDate.year() === year;
+      const expenseEndDate = expense.endDate ? moment(expense.endDate) : null;
+
+      if (!expense.isRecurring) {
+        return expenseDate.month() + 1 === month && expenseDate.year() === year;
+      }
+
+      if (expense.isRecurring) {
+        if (!expense.endDate) {
+          return expenseDate.isBefore(moment({ year, month: month - 1 }));
+        }
+
+        return (
+          expenseDate.isBefore(moment({ year, month: month - 1 })) &&
+          expenseEndDate?.isSameOrAfter(moment({ year, month: month - 1 }))
+        );
+      }
+
+      return false;
     });
 
     this.calculateTotalAmount();

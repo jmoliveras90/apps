@@ -61,6 +61,36 @@
         La categoría es obligatoria.
       </mat-error>
     </mat-form-field>
+
+    <div class="recurring-section">
+      <mat-slide-toggle
+        formControlName="isRecurring"
+        color="primary"
+        [ngClass]="
+          expenseForm.get('isRecurring')?.value ? 'toggle-green' : 'toggle-red'
+        "
+      >
+      </mat-slide-toggle>
+
+      <span
+        [ngClass]="
+          expenseForm.get('isRecurring')?.value
+            ? 'recurring-yes'
+            : 'recurring-no'
+        "
+      >
+        {{
+          expenseForm.get("isRecurring")?.value ? "Recurrente" : "No recurrente"
+        }}
+      </span>
+    </div>
+
+    <mat-form-field *ngIf="expenseForm.get('isRecurring')?.value">
+      <mat-label>Fecha de Fin (opcional)</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="endDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
   </form>
 </div>
 

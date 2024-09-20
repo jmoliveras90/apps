@@ -46,19 +46,39 @@ export class DashboardComponent implements OnInit {
   }
 
   processExpenses(expenses: Expense[]): void {
-    const currentMonth = moment().month() + 1; // Mes actual
+    const currentMonth = moment().month() + 1;
     const currentYear = moment().year();
-
-    // Filtrar los gastos del mes actual
     const expensesThisMonth = expenses.filter((expense) => {
       const expenseDate = moment(expense.date);
-      return (
-        expenseDate.month() + 1 === currentMonth &&
-        expenseDate.year() === currentYear
-      );
+      const expenseEndDate = expense.endDate ? moment(expense.endDate) : null;
+
+      if (!expense.isRecurring) {
+        return (
+          expenseDate.month() + 1 === currentMonth &&
+          expenseDate.year() === currentYear
+        );
+      }
+
+      if (expense.isRecurring) {
+        if (!expense.endDate) {
+          return expenseDate.isBefore(
+            moment({ year: currentYear, month: currentMonth - 1 })
+          );
+        }
+
+        return (
+          expenseDate.isBefore(
+            moment({ year: currentYear, month: currentMonth - 1 })
+          ) &&
+          expenseEndDate?.isSameOrAfter(
+            moment({ year: currentYear, month: currentMonth - 1 })
+          )
+        );
+      }
+
+      return false;
     });
 
-    // Procesar los gastos por categoría para el Pie Chart
     const categoryTotals: { [category: string]: number } = {};
     expensesThisMonth.forEach((expense) => {
       if (!categoryTotals[expense.categoryName]) {
@@ -118,11 +138,33 @@ export class DashboardComponent implements OnInit {
       monthlyTotals[month] = 0;
     });
 
-    // Sumar los gastos por mes
     expenses.forEach((expense) => {
-      const expenseDate = moment(expense.date); // Suponemos que `expense.date` es una fecha válida
-      const monthName = months[expenseDate.month()]; // Obtener el nombre del mes
-      monthlyTotals[monthName] += expense.amount;
+      const expenseDate = moment(expense.date);
+
+      if (expense.isRecurring) {
+        if (
+          !expense.endDate ||
+          moment(expense.endDate).year() > moment().year()
+        ) {
+          for (let i = expenseDate.month(); i < months.length; i++) {
+            const monthName = months[i];
+
+            monthlyTotals[monthName] += expense.amount;
+          }
+        } else {
+          const expenseEndDate = moment(expense.endDate);
+
+          for (let i = expenseDate.month(); i <= expenseEndDate.month(); i++) {
+            const monthName = months[i];
+
+            monthlyTotals[monthName] += expense.amount;
+          }
+        }
+      } else {
+        const monthName = months[expenseDate.month()];
+
+        monthlyTotals[monthName] += expense.amount;
+      }
     });
 
     // Asignar los datos al gráfico de barras
