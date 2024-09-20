@@ -8,9 +8,9 @@ namespace Trello.Application
     public class SeleniumService
     {
         public static void StartSelenium(string url, string user, string password, string filter,
-            IEnumerable<string> tags, bool excluding, IEnumerable<string> names, int timeout)
+            IEnumerable<string> tags, bool excluding, bool json, IEnumerable<string> columns, IEnumerable<string> names, int timeout)
         {
-            var seleniumManager = new SeleniunManager(url, user, password, tags, excluding, timeout);
+            var seleniumManager = new SeleniunManager(url, user, password, columns, tags, excluding, json, timeout);
 
             try
             {
@@ -36,7 +36,7 @@ namespace Trello.Application
 
                 ExportData(boardDto, names);
             }
-            catch
+            catch 
             {
                 throw;
             }

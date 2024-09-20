@@ -9,7 +9,8 @@ using Trello.Selenium.Utils;
 
 namespace Trello.Selenium
 {
-    public class SeleniunManager(string url, string login, string password, IEnumerable<string> tags, bool excluding, int timeout)
+    public class SeleniunManager(string url, string login, string password,
+        IEnumerable<string> columns, IEnumerable<string> tags, bool excluding, bool json, int timeout)
     {
         public static IWebDriver Driver => WebDriverUtils.GetWebDriver();
         public WebDriverWait Wait => WebDriverUtils.GetWebDriverWait(timeout);
@@ -26,7 +27,7 @@ namespace Trello.Selenium
 
             Wait.Until(ExpectedConditions.ElementIsVisible(By.Id("trello-root")));
 
-            return GetBoard();
+            return GetBoard(columns);
         }
 
         public void Login()
@@ -59,38 +60,69 @@ namespace Trello.Selenium
                .GoToUrl($"{url}?filter={string.Join(",", tags.Select(tag => $"label:{tag}"))}{(excluding ? ",mode:and" : string.Empty)}");
         }
 
-        public static IBoard GetBoard()
+        public static IBoard GetBoard(IEnumerable<string> columns)
         {
-            return new UI.Board(By.Id("board"));
+            return new UI.Board(By.Id("board"), columns);
         }
 
         public void GetComments(BoardDto board)
         {
-
-            // Extraer el contenido del cuerpo de la página (que debería ser el JSON)
-            string json = string.Empty;
-
-            do
+            if (json)
             {
-                Thread.Sleep(50);
-                json = Wait.Until(ExpectedConditions.ElementIsVisible(By.TagName("pre"))).Text;
-            }
-            while (!json.EndsWith("}"));
+                string json = string.Empty;
 
-            var jsonData = JsonSerializer.Deserialize<Rootobject>(json);
-
-            Driver.Quit();
-
-            foreach (var column in board.Columns)
-            {
-                foreach (var card in column.Cards)
+                do
                 {
-                    card.Comment = jsonData?.actions.Where(a => a.type == "commentCard" && a.data.card.name == card.Description).Select(x => x.data.text).FirstOrDefault() ?? string.Empty;
-
-
-
+                    Thread.Sleep(50);
+                    json = Wait.Until(ExpectedConditions.ElementIsVisible(By.TagName("pre"))).Text;
                 }
-            }
+                while (!json.EndsWith("}"));
+
+                var jsonData = JsonSerializer.Deserialize<Rootobject>(json);
+
+                Driver.Quit();
+
+                foreach (var column in board.Columns)
+                {
+                    foreach (var card in column.Cards)
+                    {
+                        card.Comment = jsonData?.actions
+                            .Where(a => a.type == "commentCard" && a.data.card.name == card.Description)
+                            .Select(x => x.data.text).FirstOrDefault() ?? string.Empty;
+                    }
+                }
+            } 
+            else
+            {
+                foreach (var column in board.Columns)
+                {
+                    foreach (var card in column.Cards)
+                    {
+                        Driver.Navigate().GoToUrl(card.Href);
+
+                        Wait.Until(ExpectedConditions.ElementIsVisible(By
+                                                   .ClassName("card-detail-window")));
+
+                        Wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.ClassName("js-loading-card-actions")));
+                        Wait.Until(ExpectedConditions.ElementExists(By.ClassName("js-list-actions")));
+
+                        var comments = new List<string>();
+
+                        try
+                        {
+                            comments = Driver.FindElement(By
+                                                       .ClassName("current-comment"))
+                            .FindElements(By.TagName("p")).Select(x => x.Text).ToList();
+                        }
+                        catch
+                        {
+                            comments = [];
+                        }
+
+                        card.Comment = string.Join(" ", comments);
+                    }
+                }
+            }            
         }
 
         public void GoToJsonUrl()

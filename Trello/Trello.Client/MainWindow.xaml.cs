@@ -26,6 +26,7 @@ namespace Trello
             var password = PasswordBox.Password;
             var filter = FilterBox.Text ?? string.Empty;
             var excluding = Excluding.IsChecked ?? false;
+            var json = Json.IsChecked ?? false;
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
@@ -41,8 +42,8 @@ namespace Trello
 
             try
             {
-                SeleniumService.StartSelenium(_configuration!.Url, username, password, filter, selectedTags, excluding,
-                    _configuration.Names, _configuration.Timeout);
+                SeleniumService.StartSelenium(_configuration!.Url, username, password, filter, selectedTags, excluding, json,
+                    _configuration.Columns, _configuration.Names, _configuration.Timeout);
             }
             catch (Exception ex)
             {
