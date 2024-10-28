@@ -33,7 +33,7 @@ namespace Trello.Selenium
         public void Login()
         {
             var loginLink = Wait.Until(ExpectedConditions.ElementIsVisible(By
-                .XPath("//*[@id=\"surface\"]/div/div/header[1]/div/div[1]/div[2]/a[1]")));
+                .XPath("/html/body/div[1]/div[2]/div[1]/div/main/div/div/div[2]/div[1]/div[2]/button")));
 
             loginLink.Click();
 

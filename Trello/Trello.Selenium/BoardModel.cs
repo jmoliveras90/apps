@@ -36,7 +36,7 @@ public class Rootobject
     public Card1[] cards { get; set; }
     public Label1[] labels { get; set; }
     public List1[] lists { get; set; }
-    public Member2[] members { get; set; }
+    public Member[] members { get; set; }
     public object[] checklists { get; set; }
     public object[] customFields { get; set; }
     public Membership[] memberships { get; set; }
@@ -337,75 +337,48 @@ public class Action
     public string id { get; set; }
     public string idMemberCreator { get; set; }
     public Data data { get; set; }
-    public Appcreator appCreator { get; set; }
+    public object appCreator { get; set; }
     public string type { get; set; }
     public DateTime date { get; set; }
     public Limits1 limits { get; set; }
     public Membercreator memberCreator { get; set; }
-    public Member1 member { get; set; }
 }
 
 public class Data
 {
-    public Card card { get; set; }
-    public Old old { get; set; }
-    public Board board { get; set; }
-    public List list { get; set; }
-    public Listbefore listBefore { get; set; }
-    public Listafter listAfter { get; set; }
     public string text { get; set; }
     public Textdata textData { get; set; }
+    public Card card { get; set; }
+    public Board board { get; set; }
+    public List list { get; set; }
+    public Old old { get; set; }
+    public Listbefore listBefore { get; set; }
+    public Listafter listAfter { get; set; }
     public DateTime dateLastEdited { get; set; }
-    public Attachment attachment { get; set; }
-    public string idMember { get; set; }
-    public bool deactivated { get; set; }
-    public Member member { get; set; }
     public Cardsource cardSource { get; set; }
+    public Attachment attachment { get; set; }
+}
+
+public class Textdata
+{
+    public Emoji emoji { get; set; }
+}
+
+public class Emoji
+{
 }
 
 public class Card
 {
-    public float pos { get; set; }
     public string id { get; set; }
     public string name { get; set; }
     public int idShort { get; set; }
     public string shortLink { get; set; }
-    public string idList { get; set; }
     public string[] idLabels { get; set; }
     public string desc { get; set; }
     public bool closed { get; set; }
-    public Cover cover { get; set; }
-}
-
-public class Cover
-{
-    public string color { get; set; }
-    public object idAttachment { get; set; }
-    public string idUploadedBackground { get; set; }
-    public string size { get; set; }
-    public string brightness { get; set; }
-    public object plugin { get; set; }
-}
-
-public class Old
-{
     public float pos { get; set; }
     public string idList { get; set; }
-    public string[] idLabels { get; set; }
-    public string name { get; set; }
-    public string desc { get; set; }
-    public bool closed { get; set; }
-    public Cover1 cover { get; set; }
-}
-
-public class Cover1
-{
-    public string color { get; set; }
-    public object idAttachment { get; set; }
-    public object idUploadedBackground { get; set; }
-    public string size { get; set; }
-    public string brightness { get; set; }
-    public object plugin { get; set; }
 }
 
 public class Board
@@ -421,6 +394,16 @@ public class List
     public string name { get; set; }
 }
 
+public class Old
+{
+    public string[] idLabels { get; set; }
+    public string desc { get; set; }
+    public bool closed { get; set; }
+    public float pos { get; set; }
+    public string idList { get; set; }
+    public string name { get; set; }
+}
+
 public class Listbefore
 {
     public string id { get; set; }
@@ -428,28 +411,6 @@ public class Listbefore
 }
 
 public class Listafter
-{
-    public string id { get; set; }
-    public string name { get; set; }
-}
-
-public class Textdata
-{
-    public Emoji emoji { get; set; }
-}
-
-public class Emoji
-{
-}
-
-public class Attachment
-{
-    public string id { get; set; }
-    public string name { get; set; }
-    public string url { get; set; }
-}
-
-public class Member
 {
     public string id { get; set; }
     public string name { get; set; }
@@ -463,9 +424,13 @@ public class Cardsource
     public string shortLink { get; set; }
 }
 
-public class Appcreator
+public class Attachment
 {
     public string id { get; set; }
+    public string name { get; set; }
+    public string url { get; set; }
+    public string previewUrl { get; set; }
+    public string previewUrl2x { get; set; }
 }
 
 public class Limits1
@@ -514,27 +479,6 @@ public class Nonpublic
     public object avatarHash { get; set; }
 }
 
-public class Member1
-{
-    public string id { get; set; }
-    public bool activityBlocked { get; set; }
-    public string avatarHash { get; set; }
-    public string avatarUrl { get; set; }
-    public string fullName { get; set; }
-    public object idMemberReferrer { get; set; }
-    public string initials { get; set; }
-    public Nonpublic1 nonPublic { get; set; }
-    public bool nonPublicAvailable { get; set; }
-    public string username { get; set; }
-}
-
-public class Nonpublic1
-{
-    public string fullName { get; set; }
-    public string initials { get; set; }
-    public object avatarHash { get; set; }
-}
-
 public class Card1
 {
     public string id { get; set; }
@@ -569,6 +513,7 @@ public class Card1
     public bool manualCoverAttachment { get; set; }
     public string name { get; set; }
     public string nodeId { get; set; }
+    public bool pinned { get; set; }
     public float pos { get; set; }
     public string shortLink { get; set; }
     public string shortUrl { get; set; }
@@ -577,9 +522,10 @@ public class Card1
     public DateTime? start { get; set; }
     public bool subscribed { get; set; }
     public string url { get; set; }
-    public Cover2 cover { get; set; }
+    public Cover cover { get; set; }
     public bool isTemplate { get; set; }
     public object cardRole { get; set; }
+    public object mirrorSourceId { get; set; }
     public Attachment1[] attachments { get; set; }
     public object[] pluginData { get; set; }
     public object[] customFieldItems { get; set; }
@@ -669,7 +615,7 @@ public class Percard5
     public int warnAt { get; set; }
 }
 
-public class Cover2
+public class Cover
 {
     public string idAttachment { get; set; }
     public string color { get; set; }
@@ -696,7 +642,9 @@ public class Label
 {
     public string id { get; set; }
     public string idBoard { get; set; }
+    public string idOrganization { get; set; }
     public string name { get; set; }
+    public string nodeId { get; set; }
     public string color { get; set; }
     public int uses { get; set; }
 }
@@ -704,11 +652,10 @@ public class Label
 public class Attachment1
 {
     public string id { get; set; }
-    public int bytes { get; set; }
+    public int? bytes { get; set; }
     public DateTime date { get; set; }
     public string edgeColor { get; set; }
     public string idMember { get; set; }
-    public bool isMalicious { get; set; }
     public bool isUpload { get; set; }
     public string mimeType { get; set; }
     public string name { get; set; }
@@ -786,7 +733,7 @@ public class Totalperlist1
     public int warnAt { get; set; }
 }
 
-public class Member2
+public class Member
 {
     public string id { get; set; }
     public string aaId { get; set; }
@@ -803,7 +750,7 @@ public class Member2
     public object[] idPremOrgsAdmin { get; set; }
     public string initials { get; set; }
     public string memberType { get; set; }
-    public Nonpublic2 nonPublic { get; set; }
+    public Nonpublic1 nonPublic { get; set; }
     public bool nonPublicAvailable { get; set; }
     public object[] products { get; set; }
     public string url { get; set; }
@@ -820,7 +767,7 @@ public class Emoji2
 {
 }
 
-public class Nonpublic2
+public class Nonpublic1
 {
     public string fullName { get; set; }
     public string initials { get; set; }
