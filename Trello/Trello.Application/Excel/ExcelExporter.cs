@@ -25,7 +25,7 @@ namespace Trello.Application.Excel
                 headerRange.Style.Fill.BackgroundColor = XLColor.LightPink;
                 headerRange.Style.Font.SetBold();
 
-                foreach (var card in column.Cards)
+                foreach (var card in column.Cards.OrderBy(c => names.FirstOrDefault(x => c.Description.Contains(x, StringComparison.CurrentCultureIgnoreCase)) ?? string.Empty))
                 {
                     currentRow++;
 
