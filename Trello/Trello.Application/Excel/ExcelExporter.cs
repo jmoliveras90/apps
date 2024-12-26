@@ -31,12 +31,13 @@ namespace Trello.Application.Excel
 
                     var nameCell = worksheet.Cell(currentRow, 2);
                     var statusCell = worksheet.Cell(currentRow, 4);
+                    var splittedDescription = card.Description.Split("-");
 
                     nameCell.Style.Font.SetBold();
                     statusCell.Style.Font.SetBold();
 
                     nameCell.Value = names.FirstOrDefault(x => card.Description.Contains(x, StringComparison.CurrentCultureIgnoreCase)) ?? string.Empty;
-                    worksheet.Cell(currentRow, 3).Value = card.Description;
+                    worksheet.Cell(currentRow, 3).Value = $"{splittedDescription[0] ?? string.Empty}-{splittedDescription[1] ?? string.Empty}";
                     statusCell.Value = card.Comment.Replace("\n", " ").Replace("\\", "");
                 }
 
