@@ -169,14 +169,14 @@ namespace Report
             worksheet.Cells[5, 15].Value = "Semana";
             worksheet.Cells[5, 16].Value = "Semana del año";
 
-            var header = worksheet.Cells[5, 2, 5, 15];
+            var header = worksheet.Cells[5, 2, 5, 16];
 
             for (int i = 2; i <= 15; i++)
             {                
                 worksheet.Column(i).Width = 12;
             }
 
-            // header.AutoFitColumns();
+             header.AutoFitColumns();
 
             header.Style.Fill.PatternType = ExcelFillStyle.Solid;
             header.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(252, 100, 219)); // Color rosa cabecera  
@@ -352,7 +352,7 @@ namespace Report
 
             pivotTable.PivotTableStyle = PivotTableStyles.Medium13; // Estilo de tabla dinámica rosa
 
-            worksheet.Row(7).Hidden = true; // Oculta la fila 6 (Data)
+            worksheet.Row(8).Hidden = true; // Oculta la fila 6 (Data)
         }
     }
 }
