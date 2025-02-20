@@ -167,6 +167,7 @@ namespace Report
             worksheet.Cells[5, 13].Value = "Año";
             worksheet.Cells[5, 14].Value = "Mes";
             worksheet.Cells[5, 15].Value = "Semana";
+            worksheet.Cells[5, 16].Value = "Semana del año";
 
             var header = worksheet.Cells[5, 2, 5, 15];
 
@@ -201,22 +202,23 @@ namespace Report
                 worksheet.Cells[row, 13].Value = record.Año;
                 worksheet.Cells[row, 14].Value = record.Mes;
                 worksheet.Cells[row, 15].Value = record.Semana;
+                worksheet.Cells[row, 16].Value = record.SemanaAño;
 
-                worksheet.Cells[row, 2, row, 15].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[row, 2, row, 16].Style.Fill.PatternType = ExcelFillStyle.Solid;
 
                 if (row % 2 == 0)
                 {
-                    worksheet.Cells[row, 2, row, 15].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(254, 180, 238)); // Color rosa celdas pares
+                    worksheet.Cells[row, 2, row, 16].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(254, 180, 238)); // Color rosa celdas pares
                 }
                 else
                 {
-                    worksheet.Cells[row, 2, row, 15].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(255, 255, 255)); // Color rosa celdas impares
+                    worksheet.Cells[row, 2, row, 16].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(255, 255, 255)); // Color rosa celdas impares
                 }
 
                 row++;
             }
 
-            var tableRange = worksheet.Cells[5, 2, row - 1, 15];
+            var tableRange = worksheet.Cells[5, 2, row - 1, 16];
             var table = worksheet.Tables.Add(tableRange, "DataTable");
 
             tableRange.Style.Font.Color.SetColor(System.Drawing.Color.Black);
@@ -271,8 +273,9 @@ namespace Report
             worksheet.Cells[1, 12].Value = "Año";
             worksheet.Cells[1, 13].Value = "Mes";
             worksheet.Cells[1, 14].Value = "Semana";
+            worksheet.Cells[1, 15].Value = "Semana del año";
 
-            var header = worksheet.Cells[1, 1, 1, 14];
+            var header = worksheet.Cells[1, 1, 1, 15];
 
             int row = 2;
 
@@ -293,18 +296,19 @@ namespace Report
                 worksheet.Cells[row, 12].Value = record.Año;
                 worksheet.Cells[row, 13].Value = record.Mes;
                 worksheet.Cells[row, 14].Value = record.Semana;
+                worksheet.Cells[row, 15].Value = record.SemanaAño;
 
                 row++;
             }
 
             // Hide data columns
-            for (int col = 1; col <= 14; col++)
+            for (int col = 1; col <= 15; col++)
             {
                 worksheet.Column(col).Hidden = true;
             }
 
             // Rango tabla de datos
-            var dataRange = worksheet.Cells[1, 1, row - 1, 14];
+            var dataRange = worksheet.Cells[1, 1, row - 1, 15];
             var pivotTable = worksheet.PivotTables.Add(worksheet.Cells["P5"], dataRange, "TablaResumen");
 
             // Definir FILTROS
@@ -312,6 +316,7 @@ namespace Report
             pivotTable.PageFields.Add(pivotTable.Fields["Año"]);
             pivotTable.PageFields.Add(pivotTable.Fields["Mes"]);
             pivotTable.PageFields.Add(pivotTable.Fields["Semana"]);
+            pivotTable.PageFields.Add(pivotTable.Fields["Semana del año"]);
             pivotTable.PageFields.Add(pivotTable.Fields["Etapa"]);
 
             // Definir COLUMNAS            

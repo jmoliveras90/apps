@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System.Globalization;
 using System.Security.Cryptography;
 
 namespace Facturacion.Dto
@@ -28,6 +29,18 @@ namespace Facturacion.Dto
                 int daysDifference = (FechaModificacion.Day - firstMonthDay.Day);
                
                 return (daysDifference / 7) + 1;
+            }
+        }
+
+        public int SemanaAño
+        {
+            get
+            {
+                DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+                DateTime date = FechaModificacion;
+                System.Globalization.Calendar cal = dfi.Calendar;
+
+                return cal.GetWeekOfYear(date, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
             }
         }
 
