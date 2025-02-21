@@ -8,9 +8,6 @@ using OfficeOpenXml.Style;
 using System.Data;
 using OfficeOpenXml.Table.PivotTable;
 using OfficeOpenXml.Table;
-using DocumentFormat.OpenXml.Spreadsheet;
-using TableStyles = OfficeOpenXml.Table.TableStyles;
-using System;
 
 namespace Report
 {
@@ -52,34 +49,7 @@ namespace Report
                 return;
             }
 
-            // Verificar si el archivo está protegido con contraseña
-
             ProcessExcelFile();
-        }
-
-        private bool IsFileProtected()
-        {
-            try
-            {
-                using var package = new ExcelPackage(new FileInfo(selectedFilePath));
-                // Si intentamos abrir el archivo y es necesario, el método ThrowIfWorkbookIsProtected lanzará una excepción
-                return package.Workbook.Protection.LockStructure;
-            }
-            catch (InvalidOperationException)
-            {
-                // El archivo está protegido con contraseña
-                return true;
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("password"))
-                {
-                    return true;
-                }
-
-                MessageBox.Show($"Error al verificar la protección del archivo: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
         }
 
         private void ProcessExcelFile()
@@ -172,11 +142,11 @@ namespace Report
             var header = worksheet.Cells[5, 2, 5, 16];
 
             for (int i = 2; i <= 15; i++)
-            {                
+            {
                 worksheet.Column(i).Width = 12;
             }
 
-             header.AutoFitColumns();
+            header.AutoFitColumns();
 
             header.Style.Fill.PatternType = ExcelFillStyle.Solid;
             header.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(252, 100, 219)); // Color rosa cabecera  
@@ -240,6 +210,7 @@ namespace Report
             worksheet.Cells[tableRange.End.Row + 1, 1, tableRange.End.Row + 1, 8].Style.Font.Bold = true;
 
             AddSummaryTab(package, records);
+            AddTabsFromTemplate(package);
 
             string downloadsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
 
@@ -251,13 +222,11 @@ namespace Report
             System.Diagnostics.Process.Start(new ProcessStartInfo(newFilePath) { UseShellExecute = true });
 
             MessageBox.Show($"Archivo procesado guardado en: {newFilePath}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-
         }
 
         private void AddSummaryTab(ExcelPackage package, IEnumerable<OfertaDto> records)
-        {           
+        {
             var worksheet = package.Workbook.Worksheets.Add("Resumen");
-
 
             worksheet.Cells[1, 1].Value = "Nombre";
             worksheet.Cells[1, 2].Value = "Id Oferta";
@@ -348,11 +317,26 @@ namespace Report
              {
                  f.Compact = false;
                  f.Outline = false;
-             });           
+             });
 
             pivotTable.PivotTableStyle = PivotTableStyles.Medium13; // Estilo de tabla dinámica rosa
 
             worksheet.Row(8).Hidden = true; // Oculta la fila 6 (Data)
+        }
+
+        private void AddTabsFromTemplate(ExcelPackage package)
+        {
+            string templatePath = "Templates/template.xlsx";
+
+            // Abre el archivo de plantilla
+            using (var templatePackage = new ExcelPackage(new FileInfo(templatePath)))
+            {
+                foreach (var sheet in templatePackage.Workbook.Worksheets)
+                {
+                    // Añade una nueva hoja al archivo de salida con el mismo nombre
+                    package.Workbook.Worksheets.Add(sheet.Name, sheet);
+                }
+            }
         }
     }
 }
