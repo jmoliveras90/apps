@@ -278,7 +278,7 @@ namespace Report
 
             // Rango tabla de datos
             var dataRange = worksheet.Cells[1, 1, row - 1, 15];
-            var pivotTable = worksheet.PivotTables.Add(worksheet.Cells["P5"], dataRange, "TablaResumen");
+            var pivotTable = worksheet.PivotTables.Add(worksheet.Cells["Q5"], dataRange, "TablaResumen");
 
             // Definir FILTROS
             pivotTable.PageFields.Add(pivotTable.Fields["Campaña"]);
